@@ -1,0 +1,24 @@
+version: '2'
+services:
+  app:
+    image: portainer/portainer
+    expose:
+      - 80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    restart: always
+    environment:
+      - VIRTUAL_HOST=portainer.nguyenantoine.com
+      - VIRTUAL_PORT=9000
+      - LETSENCRYPT_HOST=portainer.nguyenantoine.com
+      - LETSENCRYPT_EMAIL=antoine.ngu@outlook.fr
+    networks:
+      - default
+      - reverse-proxy
+    command: -H unix:///var/run/docker.sock
+volumes:
+  portainer_data:
+networks:
+  reverse-proxy:
+    external: true
