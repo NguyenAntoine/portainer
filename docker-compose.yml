@@ -8,11 +8,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     restart: always
-    environment:
-      - VIRTUAL_HOST=portainer.nguyenantoine.com
-      - VIRTUAL_PORT=9000
-      - LETSENCRYPT_HOST=portainer.nguyenantoine.com
-      - LETSENCRYPT_EMAIL=antoine.ngu@outlook.fr
+    env_file:
+      - .env
     networks:
       - default
       - reverse-proxy
