@@ -1,21 +1,30 @@
-version: '2'
 services:
   app:
-    image: portainer/portainer
+    image: portainer/portainer:latest
+    container_name: portainer
+    restart: always
     expose:
       - 80
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer_data:/data
-    restart: always
-    env_file:
-      - .env
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST}
+      - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+    command: -H unix:///var/run/docker.sock
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     networks:
       - default
       - reverse-proxy
-    command: -H unix:///var/run/docker.sock
+
 volumes:
   portainer_data:
+
 networks:
   reverse-proxy:
     external: true
