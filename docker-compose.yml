@@ -4,7 +4,9 @@ services:
     container_name: portainer
     restart: always
     expose:
-      - 80
+      - 9000
+    ports:
+      - "9000:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - portainer_data:/data
@@ -12,6 +14,7 @@ services:
       - VIRTUAL_HOST=${VIRTUAL_HOST}
       - LETSENCRYPT_HOST=${LETSENCRYPT_HOST}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      - VIRTUAL_PORT=9000
     command: -H unix:///var/run/docker.sock
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
