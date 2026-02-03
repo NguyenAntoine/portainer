@@ -1,6 +1,6 @@
 services:
   app:
-    image: portainer/portainer:latest
+    image: portainer/portainer-ce:lts
     container_name: portainer
     restart: always
     expose:
